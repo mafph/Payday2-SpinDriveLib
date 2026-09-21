@@ -1,0 +1,30 @@
+{
+  "name": "SpinDriveLib",
+  "description": "Generic spin-up / RoF-ramp engine for Gatling-style weapon mods and vanilla miniguns. Other mods register a profile via _G.SpinDrive.register(...); SpinDrive handles barrel spin animation, ADS rev-up, spin sound, and rate-of-fire ramping.",
+  "author": "I AM GREEN",
+  "blt_version": 2,
+  "version": "1.0.0",
+  "color": "0 219 0",
+  "image": "spindrive_thumbnail.dds",
+  "is_library": true,
+  "updates" : [
+	{
+		"provider" : "mws",
+		"identifier" : "59094",
+	}
+  ],
+  "hooks": [
+    {
+		"hook_id": "lib/units/weapons/newraycastweaponbase",
+		"script_path": "hooks/spindrive_core.lua"
+	},
+	{
+		"hook_id": "lib/units/weapons/newraycastweaponbase",
+		"script_path": "hooks/spindrive_spin.lua"
+	},
+	{
+		"hook_id": "lib/managers/playermanager",
+		"script_path": "hooks/spindrive_rofbuff.lua"
+	}
+  ]
+}
