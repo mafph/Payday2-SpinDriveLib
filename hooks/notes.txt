@@ -76,3 +76,22 @@ get data from consumer
 	
 how do you init you own code if there aren't classes?
 installing lua4windows because how am i supposed to know lua syntax + easier to prove i did it on my own than writing in np++
+
+i'd rather use a language that uses typing
+
+log("DEBUG: name is type " .. type(name) .. " | stats is type " .. type(stats))
+for k, v in ipairs(SD.registeredMods) do
+		log("Registered Mod " .. name .. " on Slot " .. k .. "with stats: ")
+		for key, stat in pairs(v) do
+			log(tostring(key) .. " = " .. tostring(stat))
+		end
+	end
+
+registering is stupid. 
+consumer writes into part in weapontweak in custom_stats spindrive table.
+i will just look at runtime if custom_stats contains spindrive and 
+then call that in newraycastweapon
+i can look for these values at gamestart -> maybe on weaponswitch so i can still use dev map
+-> playerinvetory-lua  "equip_selection"
+
+back pain, coming back later
