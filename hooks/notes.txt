@@ -69,3 +69,6 @@ get data from consumer
 		ramped = max_speed * ramp_pct / base_speed
 		
 	need a break
+	remember for release: no comments, sqash mathmatic functions, no helpers
+	i need to check if going from outside to inside a hook changes scope
+	-> likely to change thread, no helper function outside hook?
