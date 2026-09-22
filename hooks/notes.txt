@@ -15,6 +15,7 @@ Forbidden:
 type checking
 pcall
 checking yourself
+comments
 
 let's see if iircc what i did then.
 I want spin.
@@ -72,3 +73,6 @@ get data from consumer
 	remember for release: no comments, sqash mathmatic functions, no helpers
 	i need to check if going from outside to inside a hook changes scope
 	-> likely to change thread, no helper function outside hook?
+	
+how do you init you own code if there aren't classes?
+installing lua4windows because how am i supposed to know lua syntax + easier to prove i did it on my own than writing in np++
