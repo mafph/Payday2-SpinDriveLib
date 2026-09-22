@@ -95,3 +95,12 @@ i can look for these values at gamestart -> maybe on weaponswitch so i can still
 -> playerinvetory-lua  "equip_selection"
 
 back pain, coming back later
+
+gotta get a grip, gotta finish this before it finishes me.
+Lend me some haki oden, this is base lua code we are up against
+
+raycast self._name_id ; self._parts
+
+decided to fully setup stats in part.custom_stats.spindrive
+wrote ramp for FRM (fire rate multiplier)
+need to figure out how to calc pct, maybe increase on trigger_held, decrease when not in update
