@@ -1,0 +1,12 @@
+time to redo from scratch.
+i will go into this blind and see what happenes.
+
+before I can start I need to check what the main issue was according to others:
+excessive type checking and pcall function wraps
+-> fix the underlying bugs instead of sweeping it under the rug
+
+no quality checking, which the mod team tries to avoid
+You have a lot of custom functions and code here, but even those members are double and triple checked with redundant type sanity checks and pcalls
+"Checking for these modifications is out of scope, because you as a human developer know that if the user changes these things, it's the user's problem."
+
+=> Coding style should be all gas, no breaks
