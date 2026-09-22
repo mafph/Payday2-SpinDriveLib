@@ -10,3 +10,62 @@ You have a lot of custom functions and code here, but even those members are dou
 "Checking for these modifications is out of scope, because you as a human developer know that if the user changes these things, it's the user's problem."
 
 => Coding style should be all gas, no breaks
+
+Forbidden:
+type checking
+pcall
+checking yourself
+
+let's see if iircc what i did then.
+I want spin.
+We need:
+	spinup / down
+	min_maxspeed
+	start_pct -> don't need max_pct
+	accuracy_penalty
+	sound
+	
+registering still seems like a good idea
+still need to rawget after i have checked. -> thou shall not check thy inputs
+
+assumptions:
+lua works by reference 
+-> need to copy things if I don't want accidents.
+-> -> i only need to validate when copying from the consumer.
+-> -> -> i shouldn't call functions of the consumer because i have the constraint of not deploying safety checks
+blt works in single thread -> data doesn't break in memory
+no self modifying code at runtime
+most overwrite issues happen before ingame (weapontweak, ...factory..., menue)
+-> the data is set in stone once i call it at newraycastweapon
+runtime speed >> crash safety
+
+back to functionality
+consumer need to figure out how to display on gui (factory: fire_rate_multiplier, en.loc)
+get data from consumer
+	fire_rate_ramp: NewRaycastWeaponBase:fire_rate_multiplier()
+	recoil: NewRaycastWeaponBase:recoil_multiplier()
+	accuracy penalty: NewRaycastWeaponBase:spread_multiplier()
+	spin: i forgor ->tip: revolving shotgun [didn't find the code snippet that was refered to...]
+	-> still want rampup/down to be visually represented by a sigmoid function
+	-> -> easy aprox should be d_accel = 0-1 + 0.5sin((pi/2*dt)*speed) -> fine tweak because I know that thats bad interpretation
+	i think i did spin with vec3_offset + z_angle. and something with ns_clones in world
+	remember that 10rot per s are 3600 arc/s -> 6 barrels are using rpm -> spinrate = rpm/6
+	so 3000rpm = 50rps = 50rps/6b * 360 arc = 3000rpm => 8+1/3rot/s ? need to check
+	
+	fire_rate_multiplier_max = max_speed / min_speed
+	ramp: map?
+	fire_rate_multiplier = fire_rate_multiplier + ...
+	-> couple accel / decel to trigger held and ads. if trigger_held / ads = accel 
+	for each frame without either: decel
+	ads: ads_speed = max_speed * 0.4
+	if speed > ads_speed -> deccel with max_speed - ads_speed
+	if speed < ads_speed -> accel clamp ads_speed
+	
+	lerp
+	ramp()
+		dt 
+		up_time
+		ramp_pct = dt
+		ramped = max_speed * ramp_pct / base_speed
+		
+	need a break
