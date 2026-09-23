@@ -2,14 +2,9 @@ _G.SpinDrive = _G.SpinDrive or {}
 local SD = _G.SpinDrive
 
 function SD.getPartStats(weapon)
-	for _, partId in pairs(weapon._blueprint) do
-		local part = tweak_data.weapon.factory.parts[partId]
-		local stats = (part.custom_stats or {}).spindrive
-		if stats then
-			return stats
-		end
-	end
-	return nil
+	local part = tweak_data.weapon.factory.parts[weapon._blueprint.barrel]
+	local stats = (part.custom_stats or {}).spindrive
+	return stats
 end
 
 Hooks:OverrideFunction(NewRaycastWeaponBase, "fire_rate_multiplier", function(self, ...)

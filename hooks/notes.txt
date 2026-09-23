@@ -122,3 +122,5 @@ ads doesn't work -> needed to add the diff over min, works now
 
 removing pct was a mistake as i need it for spin
 looks even better now
+
+code was to safe, made it less safe
