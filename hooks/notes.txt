@@ -109,3 +109,5 @@ raycastweaponbase has no update. need to get dt from playerstandard
 
 function PlayerStandard:in_steelsight()
 
+2:43am? in the morning. i am too tired to properly think. gotta get me some help from the 
+ai because i made stupid mistakes by backing myself into a corner trying to to weird arithmatics
