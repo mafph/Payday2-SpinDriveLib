@@ -115,3 +115,7 @@ ai because i made stupid mistakes by backing myself into a corner trying to to w
 fixed syntax of hooks and calls, moved steelsight_checks into playerstandards own in_steelsight()
 now using game internal math.step to not use min max to clamp variables myself
 added rpm_pct_ads as a tunable for the consumer
+
+big think: i can calc frm directly in playerupdate.standard 
+done, now i can remove excessive code
+ads doesn't work -> needed to add the diff over min, works now
