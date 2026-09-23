@@ -124,3 +124,8 @@ removing pct was a mistake as i need it for spin
 looks even better now
 
 code was to safe, made it less safe
+
+spin: number of barrels, rotation axis, both in custom_stats.spindrive
+then just rotate  object:set_local_rotation(Rotation(0, 0, angle))
+
+do el spinadero
