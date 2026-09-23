@@ -21,6 +21,7 @@ Hooks:PostHook(PlayerInventory, "_send_equipped_weapon", "spindrive_init", funct
     local stats = _G.SpinDrive.getPartStats(base)
 	base._spindrive_stats = stats
 	base._spindrive_mult = stats and stats.rpm_pct_min or 1
+	base._spindrive_pct = 0
 end)
 
 Hooks:PostHook(PlayerStandard, "update", "spindriveDt", function(self, t, dt)
@@ -28,27 +29,22 @@ Hooks:PostHook(PlayerStandard, "update", "spindriveDt", function(self, t, dt)
 	if self._equipped_unit then
 		local wpn = self._equipped_unit:base()
 		local stats = wpn._spindrive_stats
+		local mult = wpn._spindrive_mult
+		local pct = wpn._spindrive_pct
 		if stats then
 			local peak_mult = stats.peak_rpm / stats.base_rpm
 			if self._shooting then 
-				wpn._spindrive_mult = math.step(
-					wpn._spindrive_mult, 
-					peak_mult, 
-					(peak_mult - stats.rpm_pct_min) / stats.accel_time * dt
-				)
+				pct = math.step(pct, 1, dt / stats.accel_time)
+				mult = stats.rpm_pct_min + pct * (peak_mult - stats.rpm_pct_min)
 			elseif self._state_data.in_steelsight then
-				wpn._spindrive_mult = math.step(
-					wpn._spindrive_mult,
-					stats.rpm_pct_min + stats.rpm_pct_ads * (peak_mult - stats.rpm_pct_min),
-					(peak_mult - stats.rpm_pct_min) / stats.accel_time * dt
-				)
+				pct = math.step(pct, stats.rpm_pct_ads, dt / stats.accel_time)
+				mult = stats.rpm_pct_min + pct * (peak_mult - stats.rpm_pct_min)
 			else
-				wpn._spindrive_mult = math.step(
-					wpn._spindrive_mult, 
-					stats.rpm_pct_min, 
-					(peak_mult - stats.rpm_pct_min) / stats.decel_time * dt
-				)
+				pct = math.step(pct, 0, dt / stats.decel_time)
+				mult = stats.rpm_pct_min + pct * (peak_mult - stats.rpm_pct_min)
 			end
+			wpn._spindrive_pct = pct
+			wpn._spindrive_mult = mult
 		end
 	end
 end)

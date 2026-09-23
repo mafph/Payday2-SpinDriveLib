@@ -119,3 +119,6 @@ added rpm_pct_ads as a tunable for the consumer
 big think: i can calc frm directly in playerupdate.standard 
 done, now i can remove excessive code
 ads doesn't work -> needed to add the diff over min, works now
+
+removing pct was a mistake as i need it for spin
+looks even better now
