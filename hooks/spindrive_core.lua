@@ -31,7 +31,7 @@ local function rampFRM(weapon)
 	return nil
 end
 
-Hook:PreHook(NewRaycastWeaponBase, "fire_rate_multiplier", "spindrive_FRM", function(self,...)
+Hooks:PreHook(NewRaycastWeaponBase, "fire_rate_multiplier", "spindrive_FRM", function(self,...)
 	local FRM = rampFRM(self)
 	if FRM then
 		return FRM
@@ -39,16 +39,7 @@ Hook:PreHook(NewRaycastWeaponBase, "fire_rate_multiplier", "spindrive_FRM", func
 	return self._fire_rate_multiplier
 end)
 
-
-Hook:PostHook(NewRaycastWeaponBase, "_start_action_steelsight", "spindrive_accel_ADS", function(self,...)
-	_G.SpinDrive.adsStartTime = t
-end)
-
-Hook:PostHook(NewRaycastWeaponBase, "_end_action_steelsight", "spindrive_deccel_ADS", function(self,...)
-	_G.SpinDrive.adsEndTime = t
-end)
-
-Hook:PostHook(PlayerStandard, "update", "spindriveDt", function(self, t, dt)
+Hooks:PostHook(PlayerStandard, "update", "spindriveDt", function(self, t, dt)
 	local SD = _G.SpinDrive
 	if self._equipped_unit then 
 		local wpn_unit = self._equipped_unit
@@ -60,9 +51,11 @@ Hook:PostHook(PlayerStandard, "update", "spindriveDt", function(self, t, dt)
 			local _spindrive_stats = SD.getPartStats(wpn)
 			if _spindrive_stats then
 				if self._shooting then 
-					wpn._spindrive_pct = math.min(1, wpn._spindrive_pct + dt / _spindrive_stats.accel_time)
-				else 
-					wpn._spindrive_pct = math.max(0, wpn._spindrive_pct - dt / _spindrive_stats.decel_time)
+					wpn._spindrive_pct = math.step(wpn._spindrive_pct, 1, dt / _spindrive_stats.accel_time)
+				elseif self:in_steelsight() then
+					wpn._spindrive_pct = math.step(wpn._spindrive_pct, _spindrive_stats.rpm_pct_ads or 0.4, dt / _spindrive_stats.accel_time)
+				else
+					wpn._spindrive_pct = math.step(wpn._spindrive_pct, 0, dt / _spindrive_stats.decel_time)
 				end
 			end
 		end

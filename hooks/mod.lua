@@ -8,6 +8,7 @@ local wpn_upg_b_gat = {
 			base_rpm = 3000,
 			peak_rpm = 4500,
 			rpm_pct_min = 0.13,
+			rpm_pct_ads = 0.4,
 			accuracy_penalty = 0.5
 		}
 	}
