@@ -104,3 +104,8 @@ raycast self._name_id ; self._parts
 decided to fully setup stats in part.custom_stats.spindrive
 wrote ramp for FRM (fire rate multiplier)
 need to figure out how to calc pct, maybe increase on trigger_held, decrease when not in update
+
+raycastweaponbase has no update. need to get dt from playerstandard
+
+function PlayerStandard:in_steelsight()
+
