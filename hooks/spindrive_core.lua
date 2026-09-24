@@ -12,7 +12,7 @@ function SD.getPartStats(weapon)
 end
 
 Hooks:OverrideFunction(NewRaycastWeaponBase, "fire_rate_multiplier", function(self, ...)
-    return self._fire_rate_multiplier * self._spindrive_mult
+	return self._fire_rate_multiplier * self._spindrive_mult
 end)
 
 Hooks:PostHook(PlayerInventory, "_send_equipped_weapon", "spindrive_init", function(self,...)
@@ -30,22 +30,20 @@ Hooks:PostHook(PlayerStandard, "update", "spindriveDt", function(self, t, dt)
 	if self._equipped_unit then
 		local wpn = self._equipped_unit:base()
 		local stats = wpn._spindrive_stats
-		local mult = wpn._spindrive_mult
 		local pct = wpn._spindrive_pct
 		if stats then
 			local peak_mult = stats.peak_rpm / stats.base_rpm
-			if self._shooting then 
-				pct = math.step(pct, 1, dt / stats.accel_time)
-				mult = stats.rpm_pct_min + pct * (peak_mult - stats.rpm_pct_min)
+			local target, rate
+			if self._shooting then
+				target, rate = 1, dt / stats.accel_time
 			elseif self._state_data.in_steelsight then
-				pct = math.step(pct, stats.rpm_pct_ads, dt / stats.accel_time)
-				mult = stats.rpm_pct_min + pct * (peak_mult - stats.rpm_pct_min)
+				target, rate = stats.rpm_pct_ads, dt / stats.accel_time
 			else
-				pct = math.step(pct, 0, dt / stats.decel_time)
-				mult = stats.rpm_pct_min + pct * (peak_mult - stats.rpm_pct_min)
+				target, rate = 0, dt / stats.decel_time
 			end
+			pct = pct < target and math.min(target, pct + rate) or math.max(target, pct - rate)
 			wpn._spindrive_pct = pct
-			wpn._spindrive_mult = mult
+			wpn._spindrive_mult = peak_mult * stats.rpm_pct_min / (1 - (1 - stats.rpm_pct_min) * pct)
 			--spin
 			wpn._spindrive_angle = (wpn._spindrive_angle or 0) + stats.peak_rpm * (6 / stats.n_barrels) * pct * dt
 			local obj = wpn._parts[wpn._spindrive_partId].unit:orientation_object()
@@ -59,4 +57,3 @@ Hooks:PostHook(PlayerStandard, "update", "spindriveDt", function(self, t, dt)
 		end
 	end
 end)
-
