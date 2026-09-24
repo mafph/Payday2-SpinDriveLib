@@ -11,6 +11,11 @@ function SD.getPartStats(weapon)
 	end
 end
 
+Hooks:PostHook(NewRaycastWeaponBase, "spread_multiplier", "SpinDriveSpreadMul", function(self, current_state)
+    local vanilla = Hooks:GetReturn()
+    return vanilla + (self._spindrive_acc_pen * self._spindrive_pct^1.5 or 0)
+end)
+
 Hooks:PostHook(NewRaycastWeaponBase, "fire_rate_multiplier", "SpinDriveFireRateMul", function(self)
     local vanilla = Hooks:GetReturn()
     return vanilla * (self._spindrive_mult or 1)
@@ -22,6 +27,7 @@ Hooks:PostHook(PlayerInventory, "_send_equipped_weapon", "spindrive_init", funct
 	base._spindrive_partId = partId
 	base._spindrive_stats = stats
 	base._spindrive_mult = stats and stats.rpm_pct_min or 1
+	base._spindrive_acc_pen = stats and stats.spread_penalty or 0
 	base._spindrive_pct = 0
 	base._spindrive_angle = 0
 end)
