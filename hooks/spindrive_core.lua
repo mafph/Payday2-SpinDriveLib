@@ -11,8 +11,9 @@ function SD.getPartStats(weapon)
 	end
 end
 
-Hooks:OverrideFunction(NewRaycastWeaponBase, "fire_rate_multiplier", function(self, ...)
-	return self._fire_rate_multiplier * self._spindrive_mult
+Hooks:PostHook(NewRaycastWeaponBase, "fire_rate_multiplier", "SpinDriveFireRateMul", function(self)
+    local vanilla = Hooks:GetReturn()
+    return vanilla * (self._spindrive_mult or 1)
 end)
 
 Hooks:PostHook(PlayerInventory, "_send_equipped_weapon", "spindrive_init", function(self,...)
